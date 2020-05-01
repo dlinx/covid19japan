@@ -5,6 +5,8 @@ import {
   Typography,
   Checkbox,
   FormControlLabel,
+  useTheme,
+  useMediaQuery,
 } from "@material-ui/core";
 import { IDailySummary } from "../App";
 import {
@@ -28,6 +30,8 @@ const useStyles = makeStyles(() => ({
   },
   chartHeading: {
     textTransform: "uppercase",
+    textAlign: "left",
+    marginLeft: "10px",
   },
   switch: {
     position: "absolute",
@@ -49,6 +53,9 @@ const Chart: React.FC<Props> = (props) => {
   const classes = useStyles();
   const [isCumulative, setIsCumulative] = useState(true);
   const chartHeight = (window.innerHeight - 286) / 3;
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Paper className={classes.wrapper} elevation={3}>
       {props.data[0] && props.data[0][props.dataKey] !== undefined ? (
@@ -88,7 +95,7 @@ const Chart: React.FC<Props> = (props) => {
             </linearGradient>
           </defs>
           <XAxis dataKey="date" />
-          <YAxis />
+          {!isMobile && <YAxis />}
           <Tooltip />
           {isCumulative && (
             <Area

@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -9,11 +9,17 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
 import { IPrefectureSummary } from "../App";
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   tableContainer: {
     marginTop: "10px",
+    [theme.breakpoints.down("sm")]: {
+      height: "500px",
+    },
   },
-});
+  TableCell: {
+    padding: "10px",
+  },
+}));
 interface Props {
   prefData: Array<IPrefectureSummary>;
 }
@@ -29,9 +35,15 @@ const PrefectureTable: React.FC<Props> = (props) => {
         <TableHead>
           <TableRow>
             <TableCell>Prefecture</TableCell>
-            <TableCell align="right">Confirmed</TableCell>
-            <TableCell align="right">Recovered</TableCell>
-            <TableCell align="right">Deaths</TableCell>
+            <TableCell align="right" className={classes.TableCell}>
+              Confirmed
+            </TableCell>
+            <TableCell align="right" className={classes.TableCell}>
+              Recovered
+            </TableCell>
+            <TableCell align="right" className={classes.TableCell}>
+              Deaths
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -40,9 +52,15 @@ const PrefectureTable: React.FC<Props> = (props) => {
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.confirmed}</TableCell>
-              <TableCell align="right">{row.recovered}</TableCell>
-              <TableCell align="right">{row.deaths}</TableCell>
+              <TableCell align="center" className={classes.TableCell}>
+                {row.confirmed}
+              </TableCell>
+              <TableCell align="center" className={classes.TableCell}>
+                {row.recovered}
+              </TableCell>
+              <TableCell align="center" className={classes.TableCell}>
+                {row.deaths}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

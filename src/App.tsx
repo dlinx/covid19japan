@@ -4,8 +4,9 @@ import "./App.css";
 import Counter from "./Components/Counter";
 import PrefectureTable from "./Components/PrefectureTable";
 import Chart from "./Components/Chart";
-import { makeStyles, colors } from "@material-ui/core";
+import { makeStyles, colors, Theme, useTheme } from "@material-ui/core";
 import Map from "./Components/Map";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 export interface IDailySummary {
   confirmed: number;
@@ -67,43 +68,55 @@ const MONTHS = [
   "NOV",
   "DEC",
 ];
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    display: "flex",
-    flexDirection: "column",
-    height: "100vh",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+      flexDirection: "column",
+      height: "100vh",
+    },
   },
   heading: {
     textAlign: "center",
   },
-  wrapper: {
-    display: "flex",
-    flexDirection: "row",
-    height: "calc(100% - 100px)",
+  [theme.breakpoints.up("md")]: {
+    wrapper: {
+      display: "flex",
+      flexDirection: "row",
+      height: "calc(100% - 100px)",
+    },
   },
   leftSection: {
-    width: "500px",
     padding: "10px",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
+    [theme.breakpoints.up("md")]: {
+      width: "500px",
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+    },
   },
   rightSection: {
     width: "100%",
     padding: "10px 0",
   },
   chartContainer: {
-    width: "50%",
-    display: "inline-block",
-    verticalAlign: "top",
+    [theme.breakpoints.up("md")]: {
+      width: "50%",
+      display: "inline-block",
+      verticalAlign: "top",
+    },
   },
-});
+}));
+
 function App() {
   const classes = useStyles();
   const [summary, setSummary] = useState<ISummary>({
     daily: [],
     prefectures: [],
   });
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const toShortDateString = (dateStr: string) => {
     const dt = new Date(dateStr);
     return `${dt.getDate()}-${MONTHS[dt.getMonth()]}`;
@@ -146,9 +159,11 @@ function App() {
               color={colors.grey.A400}
             />
           </div>
-          <div className={classes.chartContainer}>
-            <Map />
-          </div>
+          {!isMobile && (
+            <div className={classes.chartContainer}>
+              <Map />
+            </div>
+          )}
           <div className={classes.chartContainer}>
             <Chart
               data={summary.daily}

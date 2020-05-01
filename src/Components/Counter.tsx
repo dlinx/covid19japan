@@ -7,6 +7,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: "center",
   },
   counter: {
+    [theme.breakpoints.down("xs")]: {
+      margin: "9px",
+    },
     width: "100px",
     display: "inline-block",
     margin: "13px",
